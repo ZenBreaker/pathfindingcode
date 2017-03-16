@@ -7,8 +7,8 @@ class Cell{
     this.visited = false
     this.column = col;
     this.row = row;
-    this.iteration = 10000000;
-
+    this.iteration = Number.POSITIVE_INFINITY;
+    
   }
 
   render(){
@@ -16,5 +16,6 @@ class Cell{
     pf.context.strokeRect(this.loc.x, this.loc.y, pf.w, pf.w);
     pf.context.fillStyle = this.color;
     pf.context.fillRect(this.loc.x, this.loc.y, pf.w, pf.w);
+    pf.context.strokeText(this.iteration, this.loc.x+pf.w/2, this.loc.y+pf.w/2);
   }
 }

@@ -146,33 +146,34 @@ class PathFinder{
         }
 
         console.log(this.pathArray)
+        this.makeVectors()
   }
 
   //finds the nabers of the cell and it is marked
   findNaabersToEnd(cell,endCell){
-    if(this.grid[cell.column+1] !==  undefined
-      && this.grid[cell.column+1][cell.row] !== undefined
+    if(this.grid[cell.column+1]
+      && this.grid[cell.column+1][cell.row]
       && !this.grid[cell.column+1][cell.row].occupied
       && !this.listOfUncheckedCells.includes(this.grid[cell.column+1][cell.row])){
         this.listOfUncheckedCells.push(this.grid[cell.column+1][cell.row])
         this.grid[cell.column+1][cell.row].color = "green"
     }
-    if(this.grid[cell.column-1] !==  undefined
-      && this.grid[cell.column-1][cell.row] !== undefined
+    if(this.grid[cell.column-1]
+      && this.grid[cell.column-1][cell.row]
       && !this.grid[cell.column-1][cell.row].occupied
       && !this.listOfUncheckedCells.includes(this.grid[cell.column-1][cell.row])){
         this.listOfUncheckedCells.push(this.grid[cell.column-1][cell.row])
         this.grid[cell.column-1][cell.row].color = "green"
     }
-    if(this.grid[cell.column] !==  undefined
-      && this.grid[cell.column][cell.row+1] !== undefined
+    if(this.grid[cell.column]
+      && this.grid[cell.column][cell.row+1]
       && !this.grid[cell.column][cell.row+1].occupied
       && !this.listOfUncheckedCells.includes(this.grid[cell.column][cell.row+1])){
         this.listOfUncheckedCells.push(this.grid[cell.column][cell.row+1])
         this.grid[cell.column][cell.row+1].color = "green"
     }
-    if(this.grid[cell.column] !==  undefined
-      && this.grid[cell.column][cell.row-1] !== undefined
+    if(this.grid[cell.column]
+      && this.grid[cell.column][cell.row-1]
       && !this.grid[cell.column][cell.row-1].occupied
       && !this.listOfUncheckedCells.includes(this.grid[cell.column][cell.row-1])){
         this.listOfUncheckedCells.push(this.grid[cell.column][cell.row-1])
@@ -194,37 +195,45 @@ class PathFinder{
   findNaabersToStart(cell, startCell){
     this.localCellNaabers = []
     console.log(cell)
-    if(this.grid[(cell.column)+1] !==  undefined
-      && this.grid[cell.column+1][cell.row] !== undefined
+    if(this.grid[(cell.column)+1]
+      && this.grid[cell.column+1][cell.row]
       && !this.grid[cell.column+1][cell.row].occupied
       && !this.pathArray.includes(this.grid[cell.column+1][cell.row])
       && this.grid[cell.column+1][cell.row].visited){
         this.localCellNaabers.push(this.grid[cell.column+1][cell.row])
     }
-    if(this.grid[cell.column-1] !==  undefined
-      && this.grid[cell.column-1][cell.row] !== undefined
+    if(this.grid[cell.column-1]
+      && this.grid[cell.column-1][cell.row]
       && !this.grid[cell.column-1][cell.row].occupied
       && !this.pathArray.includes(this.grid[cell.column-1][cell.row])
       && this.grid[cell.column-1][cell.row].visited){
         this.localCellNaabers.push(this.grid[cell.column-1][cell.row])
     }
-    if(this.grid[cell.column] !==  undefined
-      && this.grid[cell.column][cell.row+1] !== undefined
+    if(this.grid[cell.column]
+      && this.grid[cell.column][cell.row+1]
       && !this.grid[cell.column][cell.row+1].occupied
       && !this.pathArray.includes(this.grid[cell.column][cell.row+1])
       && this.grid[cell.column][cell.row+1].visited){
         this.localCellNaabers.push(this.grid[cell.column][cell.row+1])
     }
-    if(this.grid[cell.column] !==  undefined
-      && this.grid[cell.column][cell.row-1] !== undefined
+    if(this.grid[cell.column]
+      && this.grid[cell.column][cell.row-1]
       && !this.grid[cell.column][cell.row-1].occupied
       && !this.pathArray.includes(this.grid[cell.column][cell.row-1])
       && this.grid[cell.column][cell.row-1].visited){
         this.localCellNaabers.push(this.grid[cell.column][cell.row-1])
     }
     var closetCell = this.localCellNaabers[0];
+    /*
     for(let i = 1; i < this.localCellNaabers.length; i++){
-      if(closetCell.loc.dist(startCell) > this.localCellNaabers[i].loc.dist(startCell)){
+      if(closetCell.loc.dist(startCell) < this.localCellNaabers[i].loc.dist(startCell)){
+        closetCell = this.localCellNaabers[i]
+      }
+    }
+    */
+
+    for(let i = 1; i < this.localCellNaabers.length; i++){
+      if(closetCell.iteration > this.localCellNaabers[i].iteration){
         closetCell = this.localCellNaabers[i]
       }
     }
@@ -248,5 +257,31 @@ class PathFinder{
     }
     return closetCell
   }
+  /*
+  makeVectors(){
+    for(let i = 0; i < this.grid.length; i++){
+      for(let j = 0; i < this.grid[i].length; i++){
+        this.localCellNaabers = []
+
+        this.localCellNaabers.push(this.grid[i+1][j])
+
+        this.localCellNaabers.push(this.grid[i-1][j])
+
+        this.localCellNaabers.push(this.grid[i][j+1])
+
+        this.localCellNaabers.push(this.grid[i][j-1])
+
+        var closetCell = this.localCellNaabers[0];
+
+        for(let i = 1; i < this.localCellNaabers.length; i++){
+          if(closetCell.iteration > this.localCellNaabers[i].iteration){
+            closetCell = this.localCellNaabers[i]
+          }
+        }
+        this.grid[i][j]
+      }
+    }
+  }
+  */
 
 }
