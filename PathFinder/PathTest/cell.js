@@ -1,7 +1,7 @@
 
 class Cell{
   constructor(loc, col, row){
-    this.loc = new vector2d(loc.x, loc.y);
+    this.loc = new vector2d(loc.vx, loc.vy);
     this.occupied = false;
     this.color = 'pink';
     this.visited = false
@@ -14,9 +14,9 @@ class Cell{
 
   render(){
     pf.context.strokeStyle = 'white';
-    pf.context.strokeRect(this.loc.x, this.loc.y, pf.w, pf.w);
+    pf.context.strokeRect(this.loc.vx, this.loc.vy, pf.w, pf.w);
     pf.context.fillStyle = this.color;
-    pf.context.fillRect(this.loc.x, this.loc.y, pf.w, pf.w);
-    pf.context.strokeText(this.iteration, this.loc.x+pf.w/2, this.loc.y+pf.w/2);
+    pf.context.fillRect(this.loc.vx, this.loc.vy, pf.w, pf.w);
+    pf.context.strokeText(this.iteration, this.loc.vx+pf.w/2, this.loc.vy+pf.w/2);
   }
 }

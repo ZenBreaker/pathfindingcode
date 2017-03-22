@@ -34,6 +34,10 @@ var vector2d = function (x, y) {
             vec.vy -= vec2.vy;
         },
 
+        returnSub: function (vec2){
+            return (new vector2d(vec2.vx-this.vx, vec2.vy-this.vy));
+        },
+
         // negate() method points the vector in the opposite direction.
         negate: function () {
             vec.vx = -vec.vx;
@@ -95,34 +99,34 @@ function Vector2d()
 		this.vx = arguments[0];
 		this.vy = arguments[1];
 	}
-	
+
 	// Multiply vector.
 	Vector2d.prototype.mul = function(mul)
 	{
 		this.vx *= mul;
 		this.vy *= mul;
 	};
-	
+
 	// Add a vector.
 	Vector2d.prototype.add = function(v2)
 	{
 		this.vx += v2.vx;
 		this.vy += v2.vy;
 	};
-	
+
 	// Subtract a vector.
 	Vector2d.prototype.sub = function(v2)
 	{
 		this.vx -= v2.vx;
 		this.vy -= v2.vy;
 	};
-	
+
 	// Length of vector.
 	Vector2d.prototype.len = function()
 	{
 		return Math.sqrt(this.vx*this.vx + this.vy*this.vy);
 	};
-	
+
 	// Normalise (unit length). Also returns length before normalisation.
 	Vector2d.prototype.normalise = function()
 	{
@@ -133,39 +137,39 @@ function Vector2d()
 		}
 		return len;
 	};
-		
-	// Dot product.	
+
+	// Dot product.
 	Vector2d.prototype.dotProd = function(v2)
 	{
 		return (this.vx * v2.vx) + (this.vy * v2.vy);
 	};
-	
+
 	// Rotate vector by an angle in radians.
 	Vector2d.prototype.rotate = function(ang)
 	{
 		this.vx = (this.vx * Math.cos(ang)) - (this.vy * Math.sin(ang));
 		this.vy = (this.vy * Math.cos(ang)) + (this.vx * Math.sin(ang));
 	};
-	
+
 	// Negate vector (point in opposite direction).
 	Vector2d.prototype.negate = function()
 	{
 		this.vx = -this.vx;
 		this.vy = -this.vy;
 	};
-	
+
 	//toString function.
 	Vector2d.prototype.toString = function()
 	{
 		return 'vx = ' + this.vx + ', vy = ' + this.vy;
 	};
-    
+
     Vector2d.prototype.rotate = function(angle) {
         this.vx = Math.cos(angle) * this.vx - Math.Sin(angle) * this.vy
         this.vy = Math.Sin(angle) * this.vx + Math.Cos(angle) * this.vy
 
     }
-    
+
    /* Vector2D CrossProduct(const Vector2D & v) const
     {
     return Vector2D(v.Y, -v.X);

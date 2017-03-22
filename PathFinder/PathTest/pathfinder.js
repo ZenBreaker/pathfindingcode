@@ -41,7 +41,11 @@ class PathFinder{
     // init class methods
     this.init();
     var butt = document.getElementById("pathbutton");
-    butt.addEventListener('click', function(){pf.pathNaaberToEndCell(pf.grid[0][0],pf.grid[pf.grid.length-1][pf.grid[0].length-1])}, false);
+    butt.addEventListener('click', function(){
+        pf.pathNaaberToEndCell(pf.grid[0][0],pf.grid[pf.grid.length-1][pf.grid[0].length-1])
+        pf.makeVectors()
+        pf.makeEmenys()
+      }, false);
 
   }
 
@@ -83,7 +87,8 @@ class PathFinder{
   run(){
     this.render();
     for(let i = 0; i < this.emenys.length; i++){
-      this.emenys[i].render(this.grid[Math.floor(this.emenys[i].loc.x/this.w)][Math.floor(this.emenys[i].loc.y/this.w)].acc)
+      this.emenys[i].render(this.grid[Math.floor(this.emenys[i].loc.vx/this.w)][Math.floor(this.emenys[i].loc.vy/this.w)].acc)
+      console.log(this.emenys[i])
     }
   }
 
@@ -112,10 +117,9 @@ class PathFinder{
     this.Start.color = "blue";
     this.End.color = "blue";
 
-    console.log("Starting point: (" + this.Start.loc.x + ", " + this.Start.loc.y + ")");
-    console.log("Ending Point: (" + this.End.loc.x + ", " + this.End.loc.y + ")")
+    console.log("Starting point: (" + this.Start.loc.vx + ", " + this.Start.loc.vy + ")");
+    console.log("Ending Point: (" + this.End.loc.vx + ", " + this.End.loc.vy + ")")
 
-    this.makeEmenys()
   }
 
 
@@ -123,15 +127,40 @@ class PathFinder{
 
   //finds a path to the endCell from the startCell
   pathNaaberToEndCell(startCell, endCell){
+
+    this.listOfUncheckedCells = []
+    this.listOfCheckedCells = []
+    this.pathArray = []
+    this.localCellNaabers = []
+    this.NaabersFound = []
+    this.interation1 = 0
+    this.emenys = []
+
+    for(let i = 0; i < this.cols; i++){
+      for(let j = 0; j < this.rows; j++){
+        this.grid[i][j].occupied = false
+        this.grid[i][j].color = 'pink'
+        this.grid[i][j].visited = false
+        this.grid[i][j].iteration = Number.POSITIVE_INFINITY
+      }
+    }
+
     this.interation1 = 0
     this.listOfUncheckedCells.push(startCell)
     while (!this.listOfUncheckedCells.includes(endCell)){
       this.findNaabersToEnd(this.findClosetUncheckNaaber(endCell),endCell)
     }
 
-    this.findPath(startCell, endCell)
-    this.makeVectors()
     console.log(this.pathArray)
+
+
+    endCell.color = "purple"
+    this.pathArray.push(endCell)
+
+    while (!this.pathArray.includes(startCell)) {
+      this.findNaabersToStart(this.pathArray[0], startCell)
+    }
+
   }
     //while if this.listOfUncheckedCells does not includes endcell then do this
       //findNaabers(this.listOfUncheckedCells[findClosetUncheckNaaber()])
@@ -142,19 +171,12 @@ class PathFinder{
 
 
   //finds the path from end cell to startCell
-  findPath(startCell, endCell){
+  //findPath(startCell, endCell){
     //while if this.pathArray does not includes startCell then do this
       //find naabers of the last cell in the this.pathArray and assign it to the this.localCellNaabers
         //takes the the last cell's naaber's that has the lowest iteration value and adds it to the path array
         //clears this.localCellNaabers array
-        endCell.color = "purple"
-        this.pathArray.push(endCell)
-
-        while (!this.pathArray.includes(startCell)) {
-          this.findNaabersToStart(this.pathArray[0], startCell)
-        }
-
-  }
+  //}
 
   //finds the nabers of the cell and it is marked
   findNaabersToEnd(cell,endCell){
@@ -256,8 +278,7 @@ class PathFinder{
       //console.log(closetCell.loc)
       //console.log(endCell.loc)
       if(!this.listOfUncheckedCells[i].visited
-        && this.listOfUncheckedCells[i].loc.sub(endCell.loc) < closetCell.loc.sub(endCell.loc)
-          ){
+        && this.listOfUncheckedCells[i].loc.returnSub(endCell.loc).lengthSquared() < closetCell.loc.returnSub(endCell.loc).lengthSquared()){
         closetCell = this.listOfUncheckedCells[i]
       }
     }
@@ -297,15 +318,16 @@ class PathFinder{
             closetCell = this.localCellNaabers[k]
           }
         }
-        this.grid[i][j].acc = new vector2d((closetCell.loc.x - this.grid[i][j].loc.x),(closetCell.loc.y - this.grid[i][j].loc.y))
+        this.grid[i][j].acc = new vector2d((closetCell.loc.vx - this.grid[i][j].loc.vx)/100,(closetCell.loc.vy - this.grid[i][j].loc.vy)/100)
       }
     }
   }
 
   makeEmenys(){
     this.emenys = []
-    for(let i = 0; i < 50; i++){
-      this.emenys[i] = new Emeny(0,0)
+    console.log(this.pathArray)
+    for(let i = 0; i < 1; i++){
+      this.emenys[i] = new Emeny(this.pathArray[0].loc.vx,this.pathArray[0].loc.vy)
     }
   }
 

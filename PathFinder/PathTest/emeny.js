@@ -8,15 +8,17 @@ class Emeny{
   }
 
   render(acc){
-    pf.context.strokeStyle = 'black';
-    pf.context.strokeRect(this.loc.x, this.loc.y, 20, 20);
-    pf.context.fillStyle = this.color;
-    pf.context.fillRect(this.loc.x, this.loc.y, 20, 20);
-    this.loc.x += this.velo.x
-    this.velo.x += this.acc.x
-    this.loc.y += this.velo.y
-    this.velo.y += this.acc.y
-    this.acc = acc
+    if(pf.width <= this.loc.x && pf.height <= this.loc.y){
+      pf.context.strokeStyle = 'black';
+      pf.context.strokeRect(this.loc.vx, this.loc.vy, 20, 20);
+      pf.context.fillStyle = this.color;
+      pf.context.fillRect(this.loc.vx, this.loc.vy, 20, 20);
+      this.loc.vx += this.velo.vx
+      this.velo.vx += this.acc.vx
+      this.loc.vy += this.velo.vy
+      this.velo.vy += this.acc.vy
+      this.acc = acc
+    }
   }
 
 
